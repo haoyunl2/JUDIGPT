@@ -2,10 +2,10 @@
 graph.png
 agent_graph.png
 multi_agent_graph.png
-src/jutulgpt/rag/retriever_store/*
-!src/jutulgpt/rag/retriever_store/__init__.py
-src/jutulgpt/rag/loaded_store/*
-!src/jutulgpt/rag/loaded_store/__init__.py
+src/judigpt/rag/retriever_store/*
+!src/judigpt/rag/retriever_store/__init__.py
+src/judigpt/rag/loaded_store/*
+!src/judigpt/rag/loaded_store/__init__.py
 .langgraph_api/
 julia_scrapbook/
 python_scrapbook/

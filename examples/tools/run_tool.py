@@ -11,13 +11,13 @@ read_from_file
 write_to_file
 grep_search
 retrieve_function_documentation
-retrieve_jutuldarcy_examples
+retrieve_judi_examples
 
 We use the grep_search as an example here.
 
 """
 
-from jutulgpt.tools import grep_search
+from judigpt.tools import grep_search
 
 if __name__ == "__main__":
     query = "MPI"

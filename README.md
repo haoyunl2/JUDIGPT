@@ -1,6 +1,6 @@
-# JutulGPT
+# JUDIGPT
 
-An AI assistant for JutulDarcy!
+An AI assistant for JUDI.jl!
 
 ![CLI example](media/JutulGPT_CLI.png "CLI example")
 
@@ -29,8 +29,8 @@ Retireve the code by cloning the repository
 
 ```bash
 # Clone and choose the repo
-git clone https://github.com/ellingsvee/JutulGPT.git
-cd JutulGPT/
+git clone https://github.com/yourusername/JUDIGPT.git
+cd JUDIGPT/
 ```
 
 If you are using `uv`, initialize the environment by
@@ -92,7 +92,7 @@ Two different agents are implemented.
 
 ### `Agent`
 
-The first agent follows an evaluator-optimizer workflow, where code is first generated and then evaluated. This strategy works well for smaller models and more specific tasks. It is f.ex. suggested to use this model for generating code to set up a simulation.
+The first agent follows an evaluator-optimizer workflow, where code is first generated and then evaluated. This strategy works well for smaller models and more specific tasks. It is for example suggested to use this model for generating code to set up a simulation.
 
 ![Evaluator Optimizer](media/Evaluator_optimizer.png "Evaluator Optimizer")
 
@@ -116,7 +116,7 @@ uv run examples/autonomous_agent.py
 
 ## Settings and configuration
 
-The agent is configured in the `src/jutulgpt/configuration.py` file.  
+The agent is configured in the `src/judigpt/configuration.py` file.  
 
 The two main settings you must specify are
 
@@ -146,13 +146,13 @@ More advanced settings are set in the `BaseConfiguration`. LangGraph will turn t
 - `agent_prompt`: The prompt used for the agent.
 - `autonomous_agent_prompt`: The prompt used for the autonomous agent.
 
-The settings can be specified by passing a configuration dictionary when invoking the models. See f.ex the `run()` function in `src/jutulgpt/agents/agent_base.py`. Alternatively, the GUI provides a custom interface where the settings can be selected.
+The settings can be specified by passing a configuration dictionary when invoking the models. See for example the `run()` function in `src/judigpt/agents/agent_base.py`. Alternatively, the GUI provides a custom interface where the settings can be selected.
 
 ## Interfaces
 
 ### CLI
 
-Enable the CLI-mode by in `src/jutulgpt/configuration.py` setting
+Enable the CLI-mode by in `src/judigpt/configuration.py` setting
 
 ```python
 cli_mode = True
@@ -162,9 +162,9 @@ This gives you a nice interface for asking questions, retrieving info, generatin
 
 ### VSCode integration using MCP
 
-For calling using JutulGPT from VSCode, it can communicate with Copilot through setting up an [MCP server](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+For calling using JUDIGPT from VSCode, it can communicate with Copilot through setting up an [MCP server](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
-To enable MCP server in JutulGPT, in `src/jutulgpt/configuration.py` set
+To enable MCP server in JUDIGPT, in `src/judigpt/configuration.py` set
 
 ```python
 cli_mode = False # Disable CLI mode
@@ -178,43 +178,43 @@ source .venv/bin/activate # If not already activated
 langgraph dev # Starts local dev server
 ```
 
-Then, in the VSCode workspace where you want to use JutulGPT, add the an MCP server through a `mcp.json` file. See the `.vscode.example/mcp.json` file for an example. Finally, select the JutulGPT MCP as a tool in the Copilot settinsgs. See [Use MCP tools in chat](https://code.visualstudio.com/docs/copilot/customization/mcp-servers#_use-mcp-tools-in-chat) for how ot do this!
+Then, in the VSCode workspace where you want to use JUDIGPT, add the an MCP server through a `mcp.json` file. See the `.vscode.example/mcp.json` file for an example. Finally, select the JUDIGPT MCP as a tool in the Copilot settings. See [Use MCP tools in chat](https://code.visualstudio.com/docs/copilot/customization/mcp-servers#_use-mcp-tools-in-chat) for how to do this!
 
 ### GUI
 
 ![GUI example](media/JutulGPT_GUI.png "GUI example")
 
-The JutulGPT also has an associated GUI called [JutulGPT-GUI](https://github.com/ellingsvee/JutulGPT-GUI).  For using the GUI, you must disable the CLI-mode. To this by setting `cli_mode = False` in `src/jutulgpt/configuration.py`.
+The JUDIGPT also has an associated GUI called [JUDIGPT-GUI](https://github.com/yourusername/JUDIGPT-GUI).  For using the GUI, you must disable the CLI-mode. To do this by setting `cli_mode = False` in `src/judigpt/configuration.py`.
 
 Install it by following the instructions in the repository. Alternatively do
 
 ```bash
 cd .. # Move to parent directory
-git clone https://github.com/ellingsvee/JutulGPT-GUI.git # Clone JutulGPT-GUI
-cd JutulGPT-GUI/
+git clone https://github.com/yourusername/JUDIGPT-GUI.git # Clone JUDIGPT-GUI
+cd JUDIGPT-GUI/
 pnpm install
-cd ../JutulGPT/ # Move back to JutulGPT
+cd ../JUDIGPT/ # Move back to JUDIGPT
 ```
 
 To run the GUI locally, you have to use the [LangGraph CLI](https://langchain-ai.github.io/langgraph/cloud/reference/cli/) tool. Start it by
 
 ```bash
-langgraph dev # Run from JutulGPT/ directory
+langgraph dev # Run from JUDIGPT/ directory
 ```
 
-and start the GUI from the JutulGPT-GUI directory by running
+and start the GUI from the JUDIGPT-GUI directory by running
 
 ```bash
-pnpm dev # Run from JutulGPT-GUI/ directory
+pnpm dev # Run from JUDIGPT-GUI/ directory
 ```
 
-The GUI can now be accessed on `http://localhost:3000/` (or some other location depending on your JutulGPT-GUI configuration).
+The GUI can now be accessed on `http://localhost:3000/` (or some other location depending on your JUDIGPT-GUI configuration).
 
-> NOTE: Remember to set `cli_mode = False` in `src/jutulgpt/configuration.py`.
+> NOTE: Remember to set `cli_mode = False` in `src/judigpt/configuration.py`.
 
 ## Fimbul (WARNING)
 
-There is some legacy code for generating code for the Fimbul package. I have removed a lot of it, but it can be re-implemented by adding some tools and modifying the prompts. My suggestion is to get familiar with the current tools fot JutulDarcy, and then later extend to Fimbul.
+There is some legacy code for generating code for the Fimbul package. I have removed a lot of it, but it can be re-implemented by adding some tools and modifying the prompts. My suggestion is to get familiar with the current tools for JUDI.jl, and then later extend to Fimbul.
 
 ## Testing
 

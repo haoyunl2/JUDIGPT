@@ -1,4 +1,4 @@
-from jutulgpt import agent
+from judigpt import agent
 
 if __name__ == "__main__":
     agent.run()
