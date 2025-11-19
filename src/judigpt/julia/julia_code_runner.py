@@ -43,7 +43,8 @@ def run_julia_file(code: str, julia_file_name: str, project_dir: str | None = No
     except subprocess.TimeoutExpired as e:
         # Kill the process if it's still running
         try:
-            e.process.kill()
+            if hasattr(e, 'process') and e.process is not None:
+                e.process.kill()
         except:
             pass
         return "", "Error: Julia process timed out after 30 seconds. This may happen when loading large packages like JUDI. The linter check was skipped."
@@ -69,16 +70,17 @@ def run_code_string_direct(code: str, project_dir: str | None = None):
             stderr=subprocess.PIPE,
             text=True,
             cwd=project_dir,
-            timeout=120,  # 120 second timeout for code execution (longer than linter)
+            timeout=180,  # 180 second timeout for code execution (JUDI package loading can be slow)
         )
         return result.stdout, result.stderr
     except subprocess.TimeoutExpired as e:
         # Kill the process if it's still running
         try:
-            e.process.kill()
+            if hasattr(e, 'process') and e.process is not None:
+                e.process.kill()
         except:
             pass
-        return "", "Error: Julia code execution timed out after 120 seconds. This may happen with complex simulations or when loading large packages."
+        return "", "Error: Julia code execution timed out after 180 seconds. This may happen with complex simulations or when loading large packages."
     except Exception as e:
         return "", f"Error running Julia: {e}"
 

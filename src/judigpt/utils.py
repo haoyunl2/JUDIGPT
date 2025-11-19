@@ -303,7 +303,7 @@ def get_last_code_response(state: State) -> CodeBlock:
     # Include the human in case the human-in-the-loop updates the generated code.
 
     if last_message.type == "ai" or last_message.type == "human":
-        last_message_content = last_message.content
+        last_message_content = get_message_text(last_message)
     else:
         last_message_content = ""
     code_block = get_code_from_response(last_message_content)

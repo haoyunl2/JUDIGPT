@@ -58,7 +58,7 @@ def response_on_rag(
         action_request_args[arg_name] = content
 
     # Prepare the human-in-the-loop UI request
-    request = HumanInterrupt(
+    request = HumanInterrupt(  # type: ignore
         action_request=ActionRequest(
             action=action_name,
             args=action_request_args,
@@ -88,7 +88,8 @@ def response_on_rag(
     #         docs[arg_names.index(arg_name)] = modify_doc_content(doc, new_content)
     if response_type == "edit":
         # User edited one or more documents
-        args_dics = human_response.get("args", {}).get("args", {})
+        args_dics = human_response.get("args", {}) or {}  # type: ignore[union-attr]
+        args_dics = args_dics.get("args", {}) if isinstance(args_dics, dict) else {}
         new_docs = []
         for i, (arg_name, doc) in enumerate(zip(arg_names, docs)):
             new_content = args_dics.get(arg_name, None)

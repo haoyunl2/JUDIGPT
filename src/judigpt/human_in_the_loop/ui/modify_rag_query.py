@@ -1,5 +1,5 @@
 from langgraph.prebuilt.interrupt import (
-    ActionRequest,
+    ActionRequest,  # type: ignore[deprecated]
     HumanInterrupt,
     HumanInterruptConfig,
     HumanResponse,
@@ -14,7 +14,7 @@ def modify_rag_query(query: str, retriever_name: str) -> str:
     interrupt_message = f"Trying to retrieve documents from {retriever_name}. Modify the query if needed."
 
     # Create the human interrupt request
-    request = HumanInterrupt(
+    request = HumanInterrupt(  # type: ignore
         action_request=ActionRequest(
             action=f"Modify {retriever_name} query", args={"Query": query}
         ),
@@ -31,7 +31,8 @@ def modify_rag_query(query: str, retriever_name: str) -> str:
     response_type = human_response.get("type")
 
     if response_type == "edit":
-        args_dics = human_response.get("args", {}).get("args", {})
+        args_dics = human_response.get("args", {}) or {}  # type: ignore[union-attr]
+        args_dics = args_dics.get("args", {}) if isinstance(args_dics, dict) else {}
         new_query = args_dics.get("Query", query)
         if new_query.strip() != "":
             query = new_query

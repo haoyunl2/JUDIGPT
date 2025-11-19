@@ -15,7 +15,7 @@ def response_on_file_write(file_path: str) -> tuple[bool, str]:
     """
 
     # Prepare the human-in-the-loop UI request
-    request = HumanInterrupt(
+    request = HumanInterrupt(  # type: ignore
         action_request=ActionRequest(
             action="Agents tries to write to a file, but the filepath already exists. Accept to overwrite, ignore to skip writing, and edit to specify a new path.",
             args={"Filepath": file_path},
@@ -36,7 +36,8 @@ def response_on_file_write(file_path: str) -> tuple[bool, str]:
         return True, file_path
 
     elif response_type == "edit":
-        args_dics = human_response.get("args", {}).get("args", {})
+        args_dics = human_response.get("args", {}) or {}  # type: ignore[union-attr]
+        args_dics = args_dics.get("args", {}) if isinstance(args_dics, dict) else {}
 
         # Get the updated code
         file_path = args_dics.get("Filepath", file_path)

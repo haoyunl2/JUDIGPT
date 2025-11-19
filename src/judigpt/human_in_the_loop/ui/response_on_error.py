@@ -9,7 +9,7 @@ from langgraph.types import interrupt
 
 def response_on_error() -> tuple[bool, str]:
     # Prepare the human-in-the-loop UI request
-    request = HumanInterrupt(
+    request = HumanInterrupt(  # type: ignore
         action_request=ActionRequest(
             action="Code failed. Accept to try to fix it. Ignore to skip code fixing. Respond to give extra feedback to the model",
             args={},

@@ -24,7 +24,7 @@ from judigpt.tools import (
     run_julia_linter,
     write_to_file,
 )
-from judigpt.utils import get_code_from_response
+from judigpt.utils import get_code_from_response, get_message_text
 
 
 class AutonomousAgent(BaseAgent):
@@ -58,12 +58,12 @@ class AutonomousAgent(BaseAgent):
                 self.state_schema,
                 input_schema=MCPInputState,
                 output_schema=MCPOutputState,
-                config_schema=BaseConfiguration,
+                context_schema=BaseConfiguration,
             )
         else:
             workflow = StateGraph(
                 self.state_schema,
-                config_schema=BaseConfiguration,
+                context_schema=BaseConfiguration,
             )
 
         # Add nodes
@@ -127,7 +127,8 @@ class AutonomousAgent(BaseAgent):
                 ]
             }
 
-        code_block = get_code_from_response(response=response.content)
+        response_content = get_message_text(response)
+        code_block = get_code_from_response(response=response_content)
 
         return {
             "messages": [response],

@@ -71,10 +71,17 @@ def make_retrieve_tool(
                 from judigpt.human_in_the_loop.cli import response_on_rag
 
                 if configuration.human_interaction.retrieved_examples:
+                    # For examples, use heading from metadata if available, otherwise use file source
+                    def get_example_section_path(doc):
+                        """Get section path for example documents."""
+                        if "heading" in doc.metadata and doc.metadata["heading"]:
+                            return doc.metadata["heading"]
+                        return get_file_source(doc)
+                    
                     retrieved_examples = response_on_rag(
                         docs=retrieved_examples,
                         get_file_source=get_file_source,
-                        get_section_path=split_examples.get_section_path,
+                        get_section_path=get_example_section_path,
                         format_doc=partial(
                             split_examples.format_doc, within_julia_context=False
                         ),
@@ -85,10 +92,17 @@ def make_retrieve_tool(
                 from judigpt.human_in_the_loop.ui import response_on_rag
 
                 if configuration.human_interaction.retrieved_examples:
+                    # For examples, use heading from metadata if available, otherwise use file source
+                    def get_example_section_path(doc):
+                        """Get section path for example documents."""
+                        if "heading" in doc.metadata and doc.metadata["heading"]:
+                            return doc.metadata["heading"]
+                        return get_file_source(doc)
+                    
                     retrieved_examples = response_on_rag(
                         retrieved_examples,
                         get_file_source=get_file_source,
-                        get_section_path=split_examples.get_section_path,
+                        get_section_path=get_example_section_path,
                         format_doc=split_examples.format_doc,
                         action_name=f"Modify retrieved {doc_label} examples",
                     )

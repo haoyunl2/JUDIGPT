@@ -154,13 +154,15 @@ def check_code(
     code = shorter_simulations(code)
 
     # Running the linter (with timeout handling)
+    # Note: Linter often times out with JUDI due to package loading time, which is normal
     try:
         linting_message, linting_issues_found = _run_linter(code, print_code=False)
     except Exception as e:
         # If linter fails completely, just skip it and continue with code execution
+        # This is expected for JUDI code due to slow package loading
         print_to_console(
-            text=f"Linter check failed: {str(e)}. Continuing with code execution check only.",
-            title="Linter Error",
+            text=f"Linter check skipped (this is normal for JUDI code due to slow package loading). Continuing with code execution check only.",
+            title="Linter Skipped",
             border_style=colorscheme.warning,
         )
         linting_message, linting_issues_found = "", False

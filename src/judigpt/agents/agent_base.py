@@ -113,7 +113,7 @@ class BaseAgent(ABC):
         Example:
         Building a ReAct agent (https://langchain-ai.github.io/langgraph/how-tos/react-agent-from-scratch/#define-nodes-and-edges)
         ```
-        workflow = StateGraph(state.State, config_schema=BaseConfiguration)
+        workflow = StateGraph(state.State, context_schema=BaseConfiguration)
 
         # Define the two nodes we will cycle between
         workflow.add_node("agent", self.call_model)
@@ -220,7 +220,7 @@ class BaseAgent(ABC):
         workspace_message = f"**Current workspace:** {os.getcwd()} \n**JUDI.jl documentation and examples can be found at:** {str(PROJECT_ROOT / 'rag' / 'judi')}"
 
         if not messages_list:
-            messages_list: List = [
+            messages_list = [
                 SystemMessage(content=self.get_prompt_from_config(config=config)),
                 SystemMessage(content=workspace_message),
             ]

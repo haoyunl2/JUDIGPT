@@ -11,8 +11,8 @@ def get_linting_result(code: str) -> str:
         # Check if there was a timeout error in stderr
         if err and "timed out" in err.lower():
             print_to_console(
-                text="Linter timed out after 30 seconds. Skipping linter check. This may happen when loading large packages like JUDI. The code will still be checked by running it.",
-                title="Linter Timeout - Skipped",
+                text="Linter timed out after 30 seconds (this is normal for JUDI code - the package takes time to load). Skipping linter check. The code will still be checked by running it, which is more reliable for JUDI.",
+                title="Linter Timeout - Skipped (Normal for JUDI)",
                 border_style=colorscheme.warning,
             )
             return ""
@@ -37,18 +37,30 @@ def get_linting_result(code: str) -> str:
                 return linting_result
 
         # If no "STARTING LINT:" marker found, linter may have failed silently
-        if err:
+        # Check if there's any output before "STARTING LINT:" that might indicate errors
+        if res and "STARTING LINT:" not in res:
+            # Show any output we got (might be partial results)
             print_to_console(
-                text=f"Linter may have failed. Error output: {err[:200]}...",
-                title="Linter Warning",
+                text=f"Linter output (may be incomplete):\n{res[:500]}...",
+                title="Linter Partial Output",
                 border_style=colorscheme.warning,
             )
+        if err:
+            # Show error output (but limit length)
+            err_preview = err[:500] if len(err) > 500 else err
+            # Don't show error if it's just a timeout (already handled above)
+            if "timed out" not in err.lower():
+                print_to_console(
+                    text=f"Linter error output:\n{err_preview}",
+                    title="Linter Error",
+                    border_style=colorscheme.error,
+                )
         return ""
 
     except subprocess.TimeoutExpired:
         print_to_console(
-            text="Linter timed out after 30 seconds. Skipping linter check. This may happen when loading large packages like JUDI. The code will still be checked by running it.",
-            title="Linter Timeout - Skipped",
+            text="Linter timed out after 30 seconds (this is normal for JUDI code - the package takes time to load). Skipping linter check. The code will still be checked by running it, which is more reliable for JUDI.",
+            title="Linter Timeout - Skipped (Normal for JUDI)",
             border_style=colorscheme.warning,
         )
         return ""  # Return empty string so linter check is considered passed

@@ -17,7 +17,7 @@ def response_on_check_code(code: str) -> tuple[bool, str, str]:
     """
 
     # Prepare the human-in-the-loop UI request
-    request = HumanInterrupt(
+    request = HumanInterrupt(  # type: ignore
         action_request=ActionRequest(
             action="Accept or modify the generated code to check it. Ignore to not check it. Respond to provide feedback and regenerate response",
             args={"Code": add_julia_context(code)},
@@ -37,7 +37,8 @@ def response_on_check_code(code: str) -> tuple[bool, str, str]:
     if response_type == "accept":
         return True, "", code
     elif response_type == "edit":
-        args_dics = human_response.get("args", {}).get("args", {})
+        args_dics = human_response.get("args", {}) or {}  # type: ignore[union-attr]
+        args_dics = args_dics.get("args", {}) if isinstance(args_dics, dict) else {}
 
         # Get the updated code
         new_code = args_dics.get("Code", code)

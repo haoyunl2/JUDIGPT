@@ -47,7 +47,7 @@ def stream_to_console(
     panel_kwargs: dict = {},
     with_markdown: bool = True,
 ) -> AIMessage:
-    ai_message: AIMessage = None
+    ai_message: Optional[AIMessage] = None
     streamed_text: str = ""
     panel_kwargs = panel_kwargs.copy()  # prevent mutation
 
@@ -91,6 +91,8 @@ def stream_to_console(
         else:
             ai_message += chunk
 
+    if ai_message is None:
+        raise ValueError("No message content received from the model")
     return ai_message
 
 
