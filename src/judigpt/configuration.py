@@ -23,16 +23,20 @@ mcp_mode: bool = (
 )
 assert not (cli_mode and mcp_mode), "cli_mode and mcp_mode cannot both be true."
 
-# # Select whether to use local models through Ollama or use OpenAI
-# LOCAL_MODELS = False
-# LLM_MODEL_NAME = "ollama:qwen3:14b" if LOCAL_MODELS else "openai:gpt-4.1"
-# EMBEDDING_MODEL_NAME = (
-#     "ollama:nomic-embed-text" if LOCAL_MODELS else "openai:text-embedding-3-small"
-# )
-
+# Select whether to use local models through Ollama or hosted OpenAI models.
+# Hosted OpenAI models have much stronger reasoning performance, but you can flip
+# LOCAL_MODELS to True when you want to run everything locally.
 LOCAL_MODELS = True
-LLM_MODEL_NAME = "ollama:qwen2.5:1.5b"  # 或 "ollama:qwen3:14b" 如果你下载了14B
-EMBEDDING_MODEL_NAME = "ollama:nomic-embed-text"
+
+if LOCAL_MODELS:
+    # Local (Ollama) defaults
+    # NOTE: qwen2.5:7b fits in system RAM on this machine; adjust if you pull other models.
+    LLM_MODEL_NAME = "ollama:qwen2.5:7b"
+    EMBEDDING_MODEL_NAME = "ollama:nomic-embed-text"
+else:
+    # Hosted OpenAI defaults
+    LLM_MODEL_NAME = "openai:gpt-4.1"
+    EMBEDDING_MODEL_NAME = "openai:text-embedding-3-small"
 
 RECURSION_LIMIT = 200  # Number of recursions before an error is thrown.
 LLM_TEMPERATURE = 0

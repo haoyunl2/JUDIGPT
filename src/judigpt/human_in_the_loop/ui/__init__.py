@@ -8,7 +8,6 @@ __all__ = [
     "response_on_rag",
     "modify_rag_query",
     "response_on_check_code",
-    "response_on_generated_code",
     "response_on_error",
     "response_on_file_write",
 ]

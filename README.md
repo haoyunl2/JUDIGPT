@@ -2,7 +2,7 @@
 
 An AI assistant for JUDI.jl!
 
-![CLI example](media/JutulGPT_CLI.png "CLI example")
+![CLI example](media/JUDIGPT_CLI.png "CLI example")
 
 ## Getting started
 
@@ -25,7 +25,7 @@ Optional:
 
 ### Step 1: Python
 
-Retireve the code by cloning the repository
+Retrieve the code by cloning the repository
 
 ```bash
 # Clone and choose the repo
@@ -171,7 +171,7 @@ cli_mode = False # Disable CLI mode
 mcp_mode = True
 ```
 
-and start JutulGPT through the [Langgraph CLI](https://docs.langchain.com/langsmith/cli) by running
+and start JUDIGPT through the [Langgraph CLI](https://docs.langchain.com/langsmith/cli) by running
 
 ```bash
 source .venv/bin/activate # If not already activated
@@ -182,7 +182,7 @@ Then, in the VSCode workspace where you want to use JUDIGPT, add the an MCP serv
 
 ### GUI
 
-![GUI example](media/JutulGPT_GUI.png "GUI example")
+![GUI example](media/JUDIGPT_GUI.png "GUI example")
 
 The JUDIGPT also has an associated GUI called [JUDIGPT-GUI](https://github.com/yourusername/JUDIGPT-GUI).  For using the GUI, you must disable the CLI-mode. To do this by setting `cli_mode = False` in `src/judigpt/configuration.py`.
 
