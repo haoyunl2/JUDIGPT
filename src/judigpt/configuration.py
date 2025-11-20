@@ -26,7 +26,7 @@ assert not (cli_mode and mcp_mode), "cli_mode and mcp_mode cannot both be true."
 # Select whether to use local models through Ollama or hosted OpenAI models.
 # Hosted OpenAI models have much stronger reasoning performance, but you can flip
 # LOCAL_MODELS to True when you want to run everything locally.
-LOCAL_MODELS = True
+LOCAL_MODELS = False
 
 if LOCAL_MODELS:
     # Local (Ollama) defaults
