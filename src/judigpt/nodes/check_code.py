@@ -64,12 +64,8 @@ def _run_julia_code(code: str, print_code: bool = True) -> tuple[str, bool]:
             title="Code Runner",
             border_style=colorscheme.warning,
         )
-    else:
-        print_to_console(
-            text="Running code...",
-            title="Code Runner",
-            border_style=colorscheme.warning,
-        )
+    # When print_code=False, we skip the initial "Running code..." message
+    # to avoid duplicate titles - the result will be shown with "Code Runner Result" title
 
     # result = run_string(code)
     result = run_code(code)
@@ -79,7 +75,7 @@ def _run_julia_code(code: str, print_code: bool = True) -> tuple[str, bool]:
 
         print_to_console(
             text=f"Code failed!\n\n{julia_error_message}",
-            title="Code Runner",
+            title="Code Runner Result",
             border_style=colorscheme.error,
         )
 
@@ -90,9 +86,24 @@ def _run_julia_code(code: str, print_code: bool = True) -> tuple[str, bool]:
         )
         return code_runner_error_message, True
 
+    # Prepare success message with output
+    runtime_msg = f"Code succeeded in {round(result['runtime'], 2)} seconds!"
+    
+    # Show output if available (filter out empty/whitespace-only output)
+    output = result.get("output", "").strip()
+    if output:
+        # Limit output length to avoid overwhelming the console
+        if len(output) > 500:
+            output_preview = output[:500] + "...\n(Output truncated)"
+        else:
+            output_preview = output
+        success_msg = f"{runtime_msg}\n\nOutput:\n{output_preview}"
+    else:
+        success_msg = runtime_msg
+    
     print_to_console(
-        text=f"Code succeded in {round(result['runtime'], 2)} seconds!",
-        title="Code Runner",
+        text=success_msg,
+        title="Code Runner Result",
         border_style=colorscheme.success,
     )
 

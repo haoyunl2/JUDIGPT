@@ -43,8 +43,9 @@ def run_julia_file(code: str, julia_file_name: str, project_dir: str | None = No
     except subprocess.TimeoutExpired as e:
         # Kill the process if it's still running
         try:
-            if hasattr(e, 'process') and e.process is not None:
-                e.process.kill()
+            process = getattr(e, 'process', None)
+            if process is not None:
+                process.kill()
         except:
             pass
         return "", "Error: Julia process timed out after 30 seconds. This may happen when loading large packages like JUDI. The linter check was skipped."
@@ -76,8 +77,9 @@ def run_code_string_direct(code: str, project_dir: str | None = None):
     except subprocess.TimeoutExpired as e:
         # Kill the process if it's still running
         try:
-            if hasattr(e, 'process') and e.process is not None:
-                e.process.kill()
+            process = getattr(e, 'process', None)
+            if process is not None:
+                process.kill()
         except:
             pass
         return "", "Error: Julia code execution timed out after 180 seconds. This may happen with complex simulations or when loading large packages."
@@ -151,6 +153,49 @@ def run_code(code: str) -> dict:
     end_time = time.time()
 
     if stderr:
+        # Check if stderr only contains CondaPkg initialization messages
+        # These are normal and don't indicate actual errors
+        condapkg_indicators = [
+            "CondaPkg Found dependencies",
+            "CondaPkg Initialising",
+            "CondaPkg Installing packages",
+            "The default environment has been installed",
+            "Operator",
+            "ran in",
+        ]
+        
+        # Check if stderr is mostly CondaPkg messages
+        stderr_lower = stderr.lower()
+        is_mostly_condapkg = any(indicator.lower() in stderr_lower for indicator in condapkg_indicators)
+        
+        # Check for actual error indicators (not just CondaPkg noise)
+        actual_error_indicators = [
+            "error:",
+            "exception:",
+            "methoderror",
+            "typeerror",
+            "argumenterror",
+            "loaderror",
+            "stacktrace:",
+        ]
+        has_actual_error = any(
+            indicator.lower() in stderr_lower for indicator in actual_error_indicators
+        )
+        
+        # If stderr contains CondaPkg messages but no actual errors, treat as success
+        if is_mostly_condapkg and not has_actual_error:
+            # Check if there's a success indicator like "Operator ... ran"
+            if "ran in" in stderr or "Operator" in stderr:
+                result = {
+                    "output": stdout,
+                    "error": False,
+                    "error_message": "",
+                    "error_stacktrace": "",
+                    "runtime": end_time - start_time,
+                }
+                return result
+        
+        # Otherwise, treat as error
         error_message, error_stacktrace = _split_stacktrace(stderr)
 
         result = {
